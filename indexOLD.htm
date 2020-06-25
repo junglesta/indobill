@@ -154,7 +154,7 @@ yourclientaddress@email.com
 
 						<div class="col meta_head">Amount Due</div>
 						<div class="col">
-							<div class="due alignright full_width currency_prefix">2500.00</div>
+							<div class="due alignright full_width">Rp 555.00</div>
 						</div>
 
 					</div>
@@ -182,11 +182,11 @@ yourclientaddress@email.com
 					</div>
 
 					<div class="col description" id="what1details">
-						<textarea rows="3">Monthly web updates for paradiseholiday.com (Nov. 1 - Nov. 30, 2018)</textarea>
+						<textarea rows="3">Monthly web updates for paradiseholiday.com (Nov. 1 - Nov. 30, 2017)</textarea>
 					</div>
 
 					<div class="col unitcost" id="what1price">
-						<textarea rows="1" class="cost currency_prefix">1000.00</textarea>
+						<textarea rows="1" class="cost">Rp 330.00</textarea>
 					</div>
 
 					<div class="col quantity" id="what1qty">
@@ -194,7 +194,7 @@ yourclientaddress@email.com
 					</div>
 
 					<div class="col totalprice">
-						<span class="price currency_prefix">1000.00</span>
+						<span class="price">Rp 330.00</span>
 						<div class="delete_wrap guide_delete">
 							<a class="delete" href="javascript:;" title="Remove item">X</a>
 						</div>
@@ -215,7 +215,7 @@ yourclientaddress@email.com
 					</div>
 
 					<div class="col unitcost">
-						<textarea rows="1" class="cost currency_prefix">1100.00</textarea>
+						<textarea rows="1" class="cost">Rp 75.00</textarea>
 					</div>
 
 					<div class="col quantity">
@@ -223,7 +223,7 @@ yourclientaddress@email.com
 					</div>
 
 					<div class="col totalprice">
-						<span class="price currency_prefix">3300.00</span>
+						<span class="price">Rp 225.00</span>
 						<div class="delete_wrap">
 							<a class="delete" href="javascript:;" title="Remove item">X</a>
 						</div>
@@ -245,7 +245,7 @@ yourclientaddress@email.com
 
 			<div class="table five_col sums">
 
-				<!-- <div class="row">
+				<div class="row">
 
 					<div class="col blank no_tag"> </div>
 
@@ -256,10 +256,10 @@ yourclientaddress@email.com
 					<div class="col total-line">Subtotal</div>
 
 					<div class="col total-value">
-						<div id="subtotal" class="alignright currency_prefix">555.00</div>
+						<div id="subtotal" class="alignright">Rp 555.00</div>
 					</div>
 
-				</div> -->
+				</div>
 
 				<div class="row">
 
@@ -272,7 +272,7 @@ yourclientaddress@email.com
 					<div class="col total-line">Total</div>
 
 					<div class="col total-value">
-						<div id="total" class="alignright currency_prefix">2500.00</div>
+						<div id="total" class="alignright">Rp 555.00</div>
 					</div>
 
 				</div>
@@ -288,7 +288,7 @@ yourclientaddress@email.com
 					<div class="col total-line">Amount Paid</div>
 
 					<div class="col total-value alignright">
-						<textarea rows="1" id="paid" class="paid currency_prefix">0.00</textarea>
+						<textarea rows="1" id="paid" class="paid">Rp 0.00</textarea>
 					</div>
 
 				</div>
@@ -304,7 +304,7 @@ yourclientaddress@email.com
 					<div class="col total-line balance">Balance Due</div>
 
 					<div class="col total-value balance">
-						<div class="due alignright currency_prefix">2500.00</div>
+						<div class="due alignright currency_prefix">Rp 555.00</div>
 					</div>
 
 				</div>
@@ -334,8 +334,12 @@ yourclientaddress@email.com
 
 
 
-		<script src="/js/intro.js"></script>
+		<script src="/js/intro.js">
+			// guided help
+		</script>
+
 		<script type="text/javascript">
+		// guided help steps
 			function startHelp() {
 				var intro = introJs().setOption("keyboardNavigation", " true ");
 				intro.setOptions({
@@ -405,7 +409,7 @@ yourclientaddress@email.com
 						},
 						{
 							element: ".notes .header",
-							intro: "Get it on your phone and share this webapp! <br><div class='qr_wrap group'><div class='qr'></div><div class='url'>https://indobill.junglestar.org</div></div>",
+							intro: "Get it on your phone and share this webapp! <br><div class='qr_wrap group'><div class='qr'></div><div class='url'>https://bill.junglestar.org</div></div>",
 							position: "top",
 							highlightClass: "step13"
 						}
@@ -419,9 +423,26 @@ yourclientaddress@email.com
 
 
 
+		<script type="text/javascript">
+			// takes care of adding thousands separator
+			function numberWithCommas(number) {
+					var parts = number.toString().split(".");
+					parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+					return parts.join(".");
+			}
+			$(document).ready(function() {
+				$(".currency_prefix").each(function() {
+					var num = $(this).html();
+					var commaNum = numberWithCommas(num);
+					$(this).html(commaNum);
+				});
+			});
+
+		</script>
 
 
 		<script type="text/javascript">
+		// invoice logic
 			function print_today() {
 				var now = new Date();
 				var months = new Array(
@@ -501,19 +522,14 @@ yourclientaddress@email.com
 				$(".price").each(function(i) {
 					price = $(this)
 						.html()
-						.replace(",", "");
+						.replace("Rp ", "");
 					if (!isNaN(price)) total += Number(price);
 				});
 
 				total = roundNumber(total, 2);
 
-				$("#subtotal").html(total);
-				$("#total").html(total);
-				$(".currency_prefix").each(function() {
-					var num = $(this).html();
-					var commaNum = numberWithCommas(num);
-					$(this).html(commaNum);
-				});
+				$("#subtotal").html("Rp " + total);
+				$("#total").html("Rp " + total);
 
 				update_balance();
 			}
@@ -522,18 +538,13 @@ yourclientaddress@email.com
 				var due =
 					$("#total")
 					.html()
-					.replace(",", "") -
+					.replace("Rp ", "") -
 					$("#paid")
 					.val()
-					.replace(",", "");
+					.replace("Rp ", "");
 				due = roundNumber(due, 2);
 
-				$(".due").html(due);
-				$(".currency_prefix").each(function() {
-					var num = $(this).html();
-					var commaNum = numberWithCommas(num);
-					$(this).html(commaNum);
-				});
+				$(".due").html("Rp " + due);
 			}
 
 			function update_price() {
@@ -542,11 +553,11 @@ yourclientaddress@email.com
 					row
 					.find(".cost")
 					.val()
-					.replace(",", "") * row.find(".qty").val();
+					.replace("Rp ", "") * row.find(".qty").val();
 				price = roundNumber(price, 2);
 				isNaN(price) ?
 					row.find(".price").html("N/A") :
-					row.find(".price").html(price);
+					row.find(".price").html("Rp " + price);
 
 				update_total();
 			}
@@ -554,8 +565,6 @@ yourclientaddress@email.com
 			function bind() {
 				$(".cost").blur(update_price);
 				$(".qty").blur(update_price);
-
-
 			}
 
 			$(document).ready(function() {
@@ -565,12 +574,9 @@ yourclientaddress@email.com
 
 				$("#paid").blur(update_balance);
 
-
-
-
 				$("#addrow").click(function() {
 					$(".item-row:last").after(
-						'<div class="row item-row"><div class="col item"><textarea rows="3">Item Name</textarea></div><div class="col description"><textarea rows="3" >Description</textarea></div><div class="col unitcost"><textarea rows="1" class="cost currency_prefix" >0</textarea></div><div class="col quantity"><textarea rows="1" class="qty" >0</textarea></div><div class="col totalprice"><span class="price currency_prefix">0</span><div class="delete_wrap"><a class="delete" href="javascript:;" title="Remove item">X</a></div></div></div>'
+						'<div class="row item-row"><div class="col item"><textarea rows="3">Item Name</textarea></div><div class="col description"><textarea rows="3" >Description</textarea></div><div class="col unitcost"><textarea rows="1" class="cost" >Rp 0</textarea rows="1"></div><div class="col quantity"><textarea rows="1" class="qty" >0</textarea></div><div class="col totalprice"><span class="price">Rp 0</span><div class="delete_wrap"><a class="delete" href="javascript:;" title="Remove item">X</a></div></div></div>'
 					);
 					if ($(".delete").length > 0) $(".delete").show();
 					bind();
@@ -605,36 +611,6 @@ yourclientaddress@email.com
 				$("#date").val(print_today());
 			});
 		</script>
-
-		<script type="text/javascript">
-			// takes care of adding thousands separator on load
-			function numberWithCommas(number) {
-					var parts = number.toString().split(".");
-					parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-					return parts.join(".");
-			}
-			$(document).ready(function() {
-				$(".currency_prefix").each(function() {
-					var num = $(this).html();
-					var commaNum = numberWithCommas(num);
-					$(this).html(commaNum);
-				});
-
-				//NOT YET WORKING
-				$("#paid").blur(function() {
-					var num = $(this).html();
-					var commaNum = numberWithCommas(num);
-					$(this).html(commaNum);
-					//temp test
-					$(this).css("background-color", "#cccccc");
-				});
-			});
-
-			$("#paid").blur(update_balance);
-
-		</script>
-
-
 
 		<script src="/js/jspdf.min.js"></script>
 		<script src="/js/html2canvas.min.js"></script>
@@ -681,9 +657,6 @@ yourclientaddress@email.com
 				});
 			}
 		</script>
-
-
-
 
 
 	</body>
